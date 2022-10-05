@@ -7,13 +7,13 @@ class Hat:
         self.contents = [key for key, val in kwargs.items() for i in range(val)]
 
     def draw(self, numberOfBalls):
-        availableBalls = copy.copy(self.contents)
-        if numberOfBalls > len(availableBalls):
-            return self.contents
+
+        if numberOfBalls > len(self.contents):
+            numberOfBalls = len(self.contents)
 
         ballsDrawndraw = []
         while numberOfBalls > 0:
-            x = availableBalls.pop(random.randint(0, len(availableBalls)-1))
+            x = self.contents.pop(random.randint(0, len(self.contents)-1))
             ballsDrawndraw.append(x)
             numberOfBalls -= 1
         return ballsDrawndraw
@@ -23,8 +23,10 @@ def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
 
     experimentsDone = 0
     numberOfPositives = 0
+
     while experimentsDone < num_experiments:
-        balls = hat.draw(num_balls_drawn)
+        copyOfHat = copy.deepcopy(hat)
+        balls = copyOfHat.draw(num_balls_drawn)
         ballsdrawn = dict()
         for ball in balls:
             ballsdrawn[ball] = ballsdrawn.get(ball, 0) + 1
